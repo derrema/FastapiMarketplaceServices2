@@ -1,0 +1,22 @@
+services:
+  api:
+    build: .
+    container_name: fastapi_cont
+    restart: always
+    env_file:
+      - .env
+    volumes:
+      - ./database.db:/app/database.db
+    expose:
+      - "8000"
+
+  nginx:
+    image: nginx:alpine
+    container_name: nginx_cont
+    restart: always
+    ports:
+      - '80:80'
+    volumes:
+      - ./nginx/nginx.conf:/etc/nginx/conf.d/default.conf
+    depends_on:
+      - api
